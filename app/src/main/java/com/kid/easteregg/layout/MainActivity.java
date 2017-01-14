@@ -1,6 +1,8 @@
 package com.kid.easteregg.layout;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -21,6 +23,7 @@ public class MainActivity extends AppCompatActivity
 
     private RecyclerView mRecyclerView;
     private LinearLayoutManager mLayoutManager;
+    long[] mHits = new long[3];
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,7 +38,30 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public void onItemClick(View view, AndroidVersion data) {
-        Toast.makeText(MainActivity.this, data.getVersionName(), Toast.LENGTH_SHORT).show();
+        //有不会修复的问题：快速点3次，最后一次点击的项就是打开项
+        System.arraycopy(mHits, 1, mHits, 0, mHits.length-1);
+        mHits[mHits.length-1] = SystemClock.uptimeMillis();
+        if (mHits[0] >= (SystemClock.uptimeMillis()-500)) {
+            Intent intent = null;
+            switch (data.getVersionName()) {
+                case "GB":
+                    intent = new Intent(MainActivity.this, GBPlatLogoActivity.class);
+                    break;
+                case "ICS":
+                    intent = new Intent(MainActivity.this, ICSPlatLogoActivity.class);
+                    break;
+                default:
+                    break;
+            }
+            try {
+                if (intent != null){
+                    startActivity(intent);
+                }
+                Toast.makeText(MainActivity.this, data.getVersionText(), Toast.LENGTH_SHORT).show();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     private void initLayout() {
