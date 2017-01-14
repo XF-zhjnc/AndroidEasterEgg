@@ -50,6 +50,9 @@ public class MainActivity extends AppCompatActivity
                 case "ICS":
                     intent = new Intent(MainActivity.this, ICSPlatLogoActivity.class);
                     break;
+                case "JB":
+                    intent = new Intent(MainActivity.this, JBPlatLogoActivity.class);
+                    break;
                 default:
                     break;
             }
