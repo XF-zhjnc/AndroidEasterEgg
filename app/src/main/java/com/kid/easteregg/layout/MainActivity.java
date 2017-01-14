@@ -53,6 +53,9 @@ public class MainActivity extends AppCompatActivity
                 case "JB":
                     intent = new Intent(MainActivity.this, JBPlatLogoActivity.class);
                     break;
+                case "KK":
+                    intent = new Intent(MainActivity.this, KKPlatLogoActivity.class);
+                    break;
                 default:
                     break;
             }

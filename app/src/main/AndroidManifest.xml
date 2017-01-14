@@ -25,6 +25,8 @@
         <activity android:name=".layout.ICSNyandroid" />
         <activity android:name=".layout.JBPlatLogoActivity" />
         <activity android:name=".layout.JBBeanBag" />
+        <activity android:name=".layout.KKPlatLogoActivity" />
+        <activity android:name=".layout.KKDessertCase" />
     </application>
 
 </manifest>
