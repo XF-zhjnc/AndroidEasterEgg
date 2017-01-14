@@ -47,6 +47,9 @@ public class MainActivity extends AppCompatActivity
                 case "GB":
                     intent = new Intent(MainActivity.this, GBPlatLogoActivity.class);
                     break;
+                case "HC":
+                    intent = new Intent(MainActivity.this, HCPlatLogoActivity.class);
+                    break;
                 case "ICS":
                     intent = new Intent(MainActivity.this, ICSPlatLogoActivity.class);
                     break;

@@ -21,6 +21,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".layout.GBPlatLogoActivity" />
+        <activity android:name=".layout.HCPlatLogoActivity" />
         <activity android:name=".layout.ICSPlatLogoActivity" />
         <activity android:name=".layout.ICSNyandroid" />
         <activity android:name=".layout.JBPlatLogoActivity" />
