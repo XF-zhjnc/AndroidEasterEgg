@@ -1,6 +1,8 @@
 package com.kid.easteregg.layout;
 
+import android.annotation.TargetApi;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.SystemClock;
 import android.support.v7.app.AppCompatActivity;
@@ -10,6 +12,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.kid.easteregg.R;
@@ -20,6 +23,12 @@ import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity
         implements MainRecycleAdapter.OnRecyclerViewItemClickListener {
+
+    private TextView infoAndroid;
+    private TextView infoPhone;
+    private TextView infoCPU;
+
+    private boolean NOFUN = false;
 
     private RecyclerView mRecyclerView;
     private LinearLayoutManager mLayoutManager;
@@ -60,25 +69,45 @@ public class MainActivity extends AppCompatActivity
                     intent = new Intent(MainActivity.this, KKPlatLogoActivity.class);
                     break;
                 case "LL":
-                    intent = new Intent(MainActivity.this, LLPlatLogoActivity.class);
+                    if (Build.VERSION.SDK_INT < 21) {
+                        NOFUN = true;
+                    } else {
+                        intent = new Intent(MainActivity.this, LLPlatLogoActivity.class);
+                    }
                     break;
                 case "MM":
-                    intent = new Intent(MainActivity.this, MMPlatLogoActivity.class);
+                    if (Build.VERSION.SDK_INT < 21) {
+                        NOFUN = true;
+                    } else {
+                        intent = new Intent(MainActivity.this, MMPlatLogoActivity.class);
+                    }
+                    break;
+                case "NN":
+                    if (Build.VERSION.SDK_INT < 24) {
+                        NOFUN = true;
+                    } else {
+                        System.out.println("do nothing");
+                        //intent = new Intent(MainActivity.this, MMPlatLogoActivity.class);
+                    }
                     break;
                 default:
                     break;
             }
             try {
+                if (NOFUN) {
+                    Toast.makeText(MainActivity.this, "Sorry, you can't play this egg.", Toast.LENGTH_SHORT).show();
+                    NOFUN = false;
+                }
                 if (intent != null){
                     startActivity(intent);
                 }
-                Toast.makeText(MainActivity.this, data.getVersionText(), Toast.LENGTH_SHORT).show();
             } catch (Exception e) {
                 e.printStackTrace();
             }
         }
     }
 
+    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     private void initLayout() {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -87,18 +116,31 @@ public class MainActivity extends AppCompatActivity
         mLayoutManager = new LinearLayoutManager(this);
         mRecyclerView.setLayoutManager(mLayoutManager);
         mRecyclerView.setHasFixedSize(true);
+
+        infoAndroid  = (TextView) findViewById(R.id.info_android);
+        infoPhone  = (TextView) findViewById(R.id.info_phone);
+        infoCPU = (TextView) findViewById(R.id.info_cpu);
+        infoAndroid.setText("Android " + Build.VERSION.RELEASE + " (API " + Build.VERSION.SDK_INT + ")");
+        infoPhone.setText(Build.BRAND + " " + Build.MODEL);
+        infoCPU.setText(Build.CPU_ABI);
+        infoCPU.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(MainActivity.this, "这是CPU架构", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     private ArrayList<AndroidVersion> getVersionsData() {
         ArrayList<AndroidVersion> list = new ArrayList<AndroidVersion>();
-        AndroidVersion GB = new AndroidVersion("GB", "Android 2.3 - Gingerbread", R.mipmap.ic_launcher);
-        AndroidVersion HC = new AndroidVersion("HC", "Android 3.0/3.1/3.2 - Honeycomb", R.mipmap.ic_launcher);
-        AndroidVersion ICS = new AndroidVersion("ICS", "Android 4.0 - Ice Cream Sandwich", R.mipmap.ic_launcher);
-        AndroidVersion JB = new AndroidVersion("JB", "Android 4.1/4.2/4.3 - Jelly Bean", R.mipmap.ic_launcher);
-        AndroidVersion KK = new AndroidVersion("KK", "Android 4.4 - KitKat", R.mipmap.ic_launcher);
-        AndroidVersion LL = new AndroidVersion("LL", "Android 5.0/5.1 - Lollipop", R.mipmap.ic_launcher);
-        AndroidVersion MM = new AndroidVersion("MM", "Android 6.0 - Marshmallow", R.mipmap.ic_launcher);
-        AndroidVersion NN = new AndroidVersion("NN", "Android 7.0 -Nougat", R.mipmap.ic_launcher);
+        AndroidVersion GB = new AndroidVersion("GB", "Android 2.3 - Gingerbread", R.mipmap.ic_android_grey600_48dp);
+        AndroidVersion HC = new AndroidVersion("HC", "Android 3.0/3.1/3.2 - Honeycomb", R.mipmap.ic_android_grey600_48dp);
+        AndroidVersion ICS = new AndroidVersion("ICS", "Android 4.0 - Ice Cream Sandwich", R.mipmap.ic_android_grey600_48dp);
+        AndroidVersion JB = new AndroidVersion("JB", "Android 4.1/4.2/4.3 - Jelly Bean", R.mipmap.ic_android_grey600_48dp);
+        AndroidVersion KK = new AndroidVersion("KK", "Android 4.4 - KitKat", R.mipmap.ic_android_grey600_48dp);
+        AndroidVersion LL = new AndroidVersion("LL", "Android 5.0/5.1 - Lollipop", R.mipmap.ic_android_grey600_48dp);
+        AndroidVersion MM = new AndroidVersion("MM", "Android 6.0 - Marshmallow", R.mipmap.ic_android_grey600_48dp);
+        AndroidVersion NN = new AndroidVersion("NN", "Android 7.0 -Nougat", R.mipmap.ic_android_grey600_48dp);
         list.add(GB);
         list.add(HC);
         list.add(ICS);

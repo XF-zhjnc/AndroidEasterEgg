@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.graphics.Typeface;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.DisplayMetrics;
@@ -50,7 +49,7 @@ public class JBPlatLogoActivity extends Activity {
         tv.setTextSize(1.25f * size);
         tv.setTextColor(0xFFFFFFFF);
         tv.setShadowLayer(4 * metrics.density, 0, 2 * metrics.density, 0x66000000);
-        tv.setText("Android  " + Build.VERSION.RELEASE);
+        tv.setText("Android  4.3.1");
         view.addView(tv, lp);
 
         tv = new TextView(this);

@@ -20,7 +20,6 @@ import android.widget.TextView;
 
 import com.kid.easteregg.R;
 
-//import android.text.method.AllCapsTransformationMethod;
 
 /**
  * Created by Administrator on 2017/1/14.

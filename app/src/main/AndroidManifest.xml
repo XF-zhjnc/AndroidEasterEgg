@@ -20,14 +20,26 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".layout.GBPlatLogoActivity" />
-        <activity android:name=".layout.HCPlatLogoActivity" />
-        <activity android:name=".layout.ICSPlatLogoActivity" />
+        <activity android:name=".layout.GBPlatLogoActivity"
+            android:theme="@style/android:Theme.Wallpaper.NoTitleBar.Fullscreen"/>
+        <activity android:name=".layout.HCPlatLogoActivity"
+            android:theme="@style/android:Theme.Wallpaper.NoTitleBar.Fullscreen"/>
+        <activity android:name=".layout.ICSPlatLogoActivity"
+            android:theme="@style/android:Theme.Wallpaper.NoTitleBar.Fullscreen"/>
         <activity android:name=".layout.ICSNyandroid" />
-        <activity android:name=".layout.JBPlatLogoActivity" />
-        <activity android:name=".layout.JBBeanBag" />
-        <activity android:name=".layout.KKPlatLogoActivity" />
+        <activity android:name=".layout.JBPlatLogoActivity"
+            android:theme="@style/android:Theme.Wallpaper.NoTitleBar.Fullscreen"/>
+        <activity android:name=".layout.JBBeanBag"
+            android:theme="@style/android:Theme.Wallpaper.NoTitleBar.Fullscreen"/>
+        <activity android:name=".layout.KKPlatLogoActivity"
+            android:theme="@style/android:Theme.Wallpaper.NoTitleBar.Fullscreen"/>
         <activity android:name=".layout.KKDessertCase" />
+        <activity android:name=".layout.LLPlatLogoActivity"
+            android:theme="@style/android:Theme.Wallpaper.NoTitleBar.Fullscreen"/>
+        <activity android:name=".layout.LLandActivity" />
+        <activity android:name=".layout.MMPlatLogoActivity"
+            android:theme="@style/android:Theme.Wallpaper.NoTitleBar.Fullscreen"/>
+        <activity android:name=".layout.MLandActivity" />
     </application>
 
 </manifest>

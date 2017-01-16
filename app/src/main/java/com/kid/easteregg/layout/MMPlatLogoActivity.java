@@ -109,18 +109,6 @@ public class MMPlatLogoActivity extends Activity {
                     @Override
                     public boolean onLongClick(View v) {
                         if (mTapCount < 5) return false;
-//                        final ContentResolver cr = getContentResolver();
-//                        if (Settings.System.getLong(cr, Settings.System.EGG_MODE, 0)
-//                                == 0) {
-//                            // For posterity: the moment this user unlocked the easter egg
-//                            try {
-//                                Settings.System.putLong(cr,
-//                                        Settings.System.EGG_MODE,
-//                                        System.currentTimeMillis());
-//                            } catch (RuntimeException e) {
-//                                Log.e("PlatLogoActivity", "Can't write settings", e);
-//                            }
-//                        }
                         im.post(new Runnable() {
                             @Override
                             public void run() {
