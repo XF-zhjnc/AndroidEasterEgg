@@ -18,6 +18,7 @@ import android.widget.Toast;
 import com.kid.easteregg.R;
 import com.kid.easteregg.adapter.MainRecycleAdapter;
 import com.kid.easteregg.model.AndroidVersion;
+import com.kid.easteregg.neko.NekoActivationActivity;
 
 import java.util.ArrayList;
 
@@ -83,11 +84,10 @@ public class MainActivity extends AppCompatActivity
                     }
                     break;
                 case "NN":
-                    if (Build.VERSION.SDK_INT < 24) {
+                    if (Build.VERSION.SDK_INT < 21) {
                         NOFUN = true;
                     } else {
-                        System.out.println("do nothing");
-                        //intent = new Intent(MainActivity.this, MMPlatLogoActivity.class);
+                        intent = new Intent(MainActivity.this, NekoActivationActivity.class);
                     }
                     break;
                 default:

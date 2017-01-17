@@ -40,6 +40,8 @@
         <activity android:name=".layout.MMPlatLogoActivity"
             android:theme="@style/android:Theme.Wallpaper.NoTitleBar.Fullscreen"/>
         <activity android:name=".layout.MLandActivity" />
+
+        <activity android:name=".neko.NekoActivationActivity" />
     </application>
 
 </manifest>
