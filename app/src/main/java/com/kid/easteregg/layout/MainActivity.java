@@ -1,10 +1,12 @@
 package com.kid.easteregg.layout;
 
 import android.annotation.TargetApi;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.SystemClock;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -83,11 +85,10 @@ public class MainActivity extends AppCompatActivity
                     }
                     break;
                 case "NN":
-                    if (Build.VERSION.SDK_INT < 24) {
+                    if (Build.VERSION.SDK_INT < 21) {
                         NOFUN = true;
                     } else {
-                        System.out.println("do nothing");
-                        //intent = new Intent(MainActivity.this, MMPlatLogoActivity.class);
+                        intent = new Intent(MainActivity.this, NNPlatLogoActivity.class);
                     }
                     break;
                 default:
@@ -167,7 +168,17 @@ public class MainActivity extends AppCompatActivity
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
+        if (id == R.id.action_supp) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setTitle("开放源代码许可");
+            builder.setMessage(R.string.supp_text);
+            builder.setNegativeButton("关闭", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.dismiss();
+                }
+            });
+            builder.create().show();
             return true;
         }
 
