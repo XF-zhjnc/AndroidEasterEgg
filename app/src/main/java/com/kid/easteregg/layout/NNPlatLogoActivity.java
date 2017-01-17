@@ -4,14 +4,14 @@ import android.animation.ObjectAnimator;
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.ActivityNotFoundException;
-import android.content.ContentResolver;
+import android.content.ComponentName;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.content.res.ColorStateList;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.RippleDrawable;
 import android.os.Build;
 import android.os.Bundle;
-import android.provider.Settings;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Gravity;
@@ -20,25 +20,35 @@ import android.view.View;
 import android.view.animation.PathInterpolator;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.kid.easteregg.R;
+import com.kid.easteregg.neko.NekoActivationActivity;
+import com.kid.easteregg.neko.NekoLand;
+import com.kid.easteregg.neko.NekoService;
+import com.kid.easteregg.neko.PrefState;
 
 /**
  * Created by Administrator on 2017/1/16.
  */
 
 @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-public class NNPlatLogoActivity extends Activity {
+public class NNPlatLogoActivity extends Activity implements PrefState.PrefsListener {
     public static final boolean REVEAL_THE_NAME = false;
     FrameLayout mLayout;
     int mTapCount;
     int mKeyCount;
     PathInterpolator mInterpolator = new PathInterpolator(0f, 0f, 0.5f, 1f);
+    private PrefState mPrefs;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mLayout = new FrameLayout(this);
         setContentView(mLayout);
+
+        mPrefs = new PrefState(this);
+        mPrefs.setListener(this);
     }
     @Override
     public void onAttachedToWindow() {
@@ -55,14 +65,8 @@ public class NNPlatLogoActivity extends Activity {
         im.setAlpha(0f);
         im.setBackground(new RippleDrawable(
                 ColorStateList.valueOf(0xFFFFFFFF),
-                getDrawable(R.drawable.platlogo_mm),
+                getDrawable(R.drawable.platlogo_nn),
                 null));
-//        im.setOutlineProvider(new ViewOutlineProvider() {
-//            @Override
-//            public void getOutline(View view, Outline outline) {
-//                outline.setOval(0, 0, view.getWidth(), view.getHeight());
-//            }
-//        });
         im.setClickable(true);
         im.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -73,7 +77,7 @@ public class NNPlatLogoActivity extends Activity {
                         if (mTapCount < 5) return false;
                         if (REVEAL_THE_NAME) {
                             final Drawable overlay = getDrawable(
-                                    com.android.internal.R.drawable.platlogo_m);
+                                    R.drawable.platlogo_nn);
                             overlay.setBounds(0, 0, v.getMeasuredWidth(), v.getMeasuredHeight());
                             im.getOverlay().clear();
                             im.getOverlay().add(overlay);
@@ -82,31 +86,38 @@ public class NNPlatLogoActivity extends Activity {
                                     .setDuration(500)
                                     .start();
                         }
-//                        final ContentResolver cr = getContentResolver();
-//                        if (Settings.System.getLong(cr, Settings.System.EGG_MODE, 0)
-//                                == 0) {
-//                            // For posterity: the moment this user unlocked the easter egg
-//                            try {
-//                                Settings.System.putLong(cr,
-//                                        Settings.System.EGG_MODE,
-//                                        System.currentTimeMillis());
-//                            } catch (RuntimeException e) {
-//                                Log.e("PlatLogoActivity", "Can't write settings", e);
-//                            }
-//                        }
                         im.post(new Runnable() {
                             @Override
                             public void run() {
                                 try {
-                                    startActivity(new Intent(Intent.ACTION_MAIN)
-                                            .setFlags(Intent.FLAG_ACTIVITY_NEW_TASK
-                                                    | Intent.FLAG_ACTIVITY_CLEAR_TASK
-                                                    | Intent.FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS)
-                                            .addCategory("com.android.internal.category.PLATLOGO"));
+                                    //startActivity(new Intent(NNPlatLogoActivity.this, NekoActivationActivity.class));
+                                    final PackageManager pm = getPackageManager();
+                                    //final ComponentName cn = new ComponentName(this, NekoTile.class);
+                                    final ComponentName cn = new ComponentName(NNPlatLogoActivity.this, NekoService.class);
+                                    if (pm.getComponentEnabledSetting(cn) == PackageManager.COMPONENT_ENABLED_STATE_ENABLED) {
+                                        if (NekoLand.DEBUG) {
+                                            Log.v("Neko", "Disabling tile.");
+                                        }
+                                        //设为不可用状态
+                                        pm.setComponentEnabledSetting(cn, PackageManager.COMPONENT_ENABLED_STATE_DISABLED, 0);
+                                        Toast.makeText(NNPlatLogoActivity.this, "抓猫猫游戏关闭", Toast.LENGTH_SHORT).show();
+                                        mPrefs.setListener(null);
+                                        NekoService.cancelJob(NNPlatLogoActivity.this);
+                                    } else {
+                                        if (NekoLand.DEBUG) {
+                                            Log.v("Neko", "Enabling tile.");
+                                        }
+                                        //设为可用状态
+                                        pm.setComponentEnabledSetting(cn, PackageManager.COMPONENT_ENABLED_STATE_ENABLED, 0);
+                                        Toast.makeText(NNPlatLogoActivity.this, "抓猫猫游戏开启", Toast.LENGTH_SHORT).show();
+                                        mPrefs.setFoodState(2);  // 永远有食物
+                                        NekoService.registerJob(NNPlatLogoActivity.this, 30);
+                                    }
+
                                 } catch (ActivityNotFoundException ex) {
                                     Log.e("PlatLogoActivity", "No more eggs.");
                                 }
-                                finish();
+                                //finish();
                             }
                         });
                         return true;
@@ -142,5 +153,10 @@ public class NNPlatLogoActivity extends Activity {
                 .setDuration(500)
                 .setStartDelay(800)
                 .start();
+    }
+
+    @Override
+    public void onPrefsChanged() {
+        //do nothing
     }
 }

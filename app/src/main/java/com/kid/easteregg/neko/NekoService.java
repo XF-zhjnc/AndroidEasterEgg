@@ -21,19 +21,15 @@ import android.app.job.JobInfo;
 import android.app.job.JobParameters;
 import android.app.job.JobScheduler;
 import android.app.job.JobService;
-import android.content.BroadcastReceiver;
 import android.content.ComponentName;
 import android.content.Context;
-import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
-
-import java.util.List;
 import android.util.Log;
-
 
 import com.kid.easteregg.R;
 
+import java.util.List;
 import java.util.Random;
 
 @TargetApi(Build.VERSION_CODES.LOLLIPOP)
@@ -54,12 +50,11 @@ public class NekoService extends JobService {
 
     public static float INTERVAL_JITTER_FRAC = 0.25f;
 
-    //@TargetApi(Build.VERSION_CODES.M)
     @Override
     public boolean onStartJob(JobParameters params) {
         Log.v(TAG, "Starting job: " + String.valueOf(params));
 
-        NotificationManager noman = getSystemService(NotificationManager.class);
+        NotificationManager noman = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
         if (NekoLand.DEBUG_NOTIFICATIONS) {
             final Bundle extras = new Bundle();
             extras.putString("android.substName", getString(R.string.notification_name));
@@ -106,23 +101,24 @@ public class NekoService extends JobService {
         return false;
     }
 
-    //@TargetApi(Build.VERSION_CODES.M)
     public static void registerJob(Context context, long intervalMinutes) {
-        JobScheduler jss = context.getSystemService(JobScheduler.class);
+        //JobScheduler jss = context.getSystemService(JobScheduler.class);
+        JobScheduler jss = (JobScheduler) context.getSystemService(Context.JOB_SCHEDULER_SERVICE);
         jss.cancel(JOB_ID);
         long interval = intervalMinutes * MINUTES;
         long jitter = (long)(INTERVAL_JITTER_FRAC * interval);
         interval += (long)(Math.random() * (2 * jitter)) - jitter;
         final JobInfo jobInfo = new JobInfo.Builder(JOB_ID,
                 new ComponentName(context, NekoService.class))
-                .setPeriodic(interval, INTERVAL_FLEX)
+                //.setPeriodic(interval, INTERVAL_FLEX)
+                .setPeriodic(interval)
                 .build();
 
         Log.v(TAG, "A cat will visit in " + interval + "ms: " + String.valueOf(jobInfo));
         jss.schedule(jobInfo);
 
         if (NekoLand.DEBUG_NOTIFICATIONS) {
-            NotificationManager noman = context.getSystemService(NotificationManager.class);
+            NotificationManager noman = (NotificationManager) context.getSystemService(NOTIFICATION_SERVICE);
             noman.notify(500, new Notification.Builder(context)
                     .setSmallIcon(R.drawable.stat_icon)
                     .setContentTitle(String.format("Job scheduled in %d min", (interval / MINUTES)))
@@ -134,9 +130,9 @@ public class NekoService extends JobService {
         }
     }
 
-    @TargetApi(Build.VERSION_CODES.M)
     public static void cancelJob(Context context) {
-        JobScheduler jss = context.getSystemService(JobScheduler.class);
+        //JobScheduler jss = context.getSystemService(JobScheduler.class);
+        JobScheduler jss = (JobScheduler) context.getSystemService(Context.JOB_SCHEDULER_SERVICE);
         Log.v(TAG, "Canceling job");
         jss.cancel(JOB_ID);
     }
