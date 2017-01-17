@@ -34,7 +34,7 @@
     <dimen name="max_v">1000dp</dimen>
     <dimen name="scenery_z">6dp</dimen>
     <dimen name="obstacle_z">18dp</dimen>
-    <dimen name="player_z">18dp</dimen>
-    <dimen name="player_z_boost">20dp</dimen>
+    <dimen name="player_z">2dp</dimen>
+    <dimen name="player_z_boost">1dp</dimen>
     <dimen name="hud_z">10dp</dimen>
 </resources>
