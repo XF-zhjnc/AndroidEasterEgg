@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">Easter Egg</string>
-    <string name="action_settings">开放源代码许可</string>
+    <string name="action_setting">设置</string>
+    <string name="action_open">开放源代码许可</string>
     <string name="info_error">Please contact me if you see this text.</string>
     <string name="supp_text">Copyright (C) 2010-2016 The Android Open Source Project\n\n
         Licensed under the Apache License, Version 2.0 (the "License");\n
@@ -12,4 +13,7 @@
         WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n
         See the License for the specific language governing permissions and\n
         limitations under the License\n\n</string>
+    <string name="hint_kkstr">请输入KitKat文本</string>
+    <string name="hint_kksize">请输入KitKat文本大小</string>
+    <string name="hint_lmdeff">请输入L/M游戏难度</string>
 </resources>

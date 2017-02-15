@@ -35,6 +35,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.kid.easteregg.R;
+import com.kid.easteregg.model.Pref;
 
 import java.util.ArrayList;
 
@@ -62,10 +63,12 @@ public class MLand extends FrameLayout {
     public static final int MIN_PLAYERS = 1;
     public static final int MAX_PLAYERS = 6;
     static final float CONTROLLER_VIBRATION_MULTIPLIER = 2f;
+    private Pref mPrefs;
+    private static int BOOST_DV;
     private static class Params {
         public float TRANSLATION_PER_SEC;
         public int OBSTACLE_SPACING, OBSTACLE_PERIOD;
-        public int BOOST_DV;
+        public int BOOST_DVM;
         public int PLAYER_HIT_SIZE;
         public int PLAYER_SIZE;
         public int OBSTACLE_WIDTH, OBSTACLE_STEM_WIDTH;
@@ -82,7 +85,7 @@ public class MLand extends FrameLayout {
             TRANSLATION_PER_SEC = res.getDimension(R.dimen.translation_per_sec);
             OBSTACLE_SPACING = res.getDimensionPixelSize(R.dimen.obstacle_spacing);
             OBSTACLE_PERIOD = (int) (OBSTACLE_SPACING / TRANSLATION_PER_SEC);
-            BOOST_DV = res.getDimensionPixelSize(R.dimen.boost_dv);
+            BOOST_DVM = res.getDimensionPixelSize(R.dimen.boost_dv);
             PLAYER_HIT_SIZE = res.getDimensionPixelSize(R.dimen.player_hit_size);
             PLAYER_SIZE = res.getDimensionPixelSize(R.dimen.player_size);
             OBSTACLE_WIDTH = res.getDimensionPixelSize(R.dimen.obstacle_width);
@@ -167,6 +170,8 @@ public class MLand extends FrameLayout {
         // we assume everything will be laid out left|top
         setLayoutDirection(LAYOUT_DIRECTION_LTR);
         setupPlayers(DEFAULT_PLAYERS);
+        mPrefs = new Pref(context);
+        BOOST_DV = mPrefs.getLmDeff() * PARAMS.BOOST_DVM;
     }
     @Override
     public void onAttachedToWindow() {
@@ -978,7 +983,8 @@ public class MLand extends FrameLayout {
                 return;
             }
             if (mBoosting) {
-                dv = -PARAMS.BOOST_DV;
+                //dv = -PARAMS.BOOST_DV;
+                dv = -BOOST_DV;
             } else {
                 dv += PARAMS.G;
             }
@@ -997,7 +1003,8 @@ public class MLand extends FrameLayout {
         }
         public void boost() {
             mBoosting = true;
-            dv = -PARAMS.BOOST_DV;
+            //dv = -PARAMS.BOOST_DV;
+            dv = -BOOST_DV;
             animate().cancel();
             animate()
                     .scaleX(1.25f)

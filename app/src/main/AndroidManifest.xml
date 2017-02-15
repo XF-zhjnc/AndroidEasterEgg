@@ -20,6 +20,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".layout.SettingActivity"
+            android:label="设置" />
         <activity android:name=".layout.GBPlatLogoActivity"
             android:theme="@style/android:Theme.Wallpaper.NoTitleBar.Fullscreen"/>
         <activity android:name=".layout.HCPlatLogoActivity"

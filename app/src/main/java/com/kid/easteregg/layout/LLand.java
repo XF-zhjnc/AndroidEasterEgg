@@ -28,6 +28,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.kid.easteregg.R;
+import com.kid.easteregg.model.Pref;
 
 import java.util.ArrayList;
 
@@ -60,10 +61,12 @@ public class LLand extends FrameLayout {
             R.drawable.pop_vortex,  1,
             R.drawable.pop_vortex2, 1,
     };
+    private Pref mPrefs;
+    private static int BOOST_DV;
     private static class Params {
         public float TRANSLATION_PER_SEC;
         public int OBSTACLE_SPACING, OBSTACLE_PERIOD;
-        public int BOOST_DV;
+        public int BOOST_DVL;
         public int PLAYER_HIT_SIZE;
         public int PLAYER_SIZE;
         public int OBSTACLE_WIDTH, OBSTACLE_STEM_WIDTH;
@@ -80,7 +83,7 @@ public class LLand extends FrameLayout {
             TRANSLATION_PER_SEC = res.getDimension(R.dimen.translation_per_sec);
             OBSTACLE_SPACING = res.getDimensionPixelSize(R.dimen.obstacle_spacing);
             OBSTACLE_PERIOD = (int) (OBSTACLE_SPACING / TRANSLATION_PER_SEC);
-            BOOST_DV = res.getDimensionPixelSize(R.dimen.boost_dv);
+            BOOST_DVL = res.getDimensionPixelSize(R.dimen.boost_dv);
             PLAYER_HIT_SIZE = res.getDimensionPixelSize(R.dimen.player_hit_size);
             PLAYER_SIZE = res.getDimensionPixelSize(R.dimen.player_size);
             OBSTACLE_WIDTH = res.getDimensionPixelSize(R.dimen.obstacle_width);
@@ -136,6 +139,8 @@ public class LLand extends FrameLayout {
         setFocusable(true);
         PARAMS = new Params(getResources());
         mTimeOfDay = irand(0, SKIES.length);
+        mPrefs = new Pref(context);
+        BOOST_DV = mPrefs.getLmDeff() * PARAMS.BOOST_DVL;
     }
     @Override
     public boolean willNotDraw() {
@@ -649,7 +654,7 @@ public class LLand extends FrameLayout {
         public void step(long t_ms, long dt_ms, float t, float dt) {
             if (getVisibility() != View.VISIBLE) return; // not playing yet
             if (mBoosting) {
-                dv = -PARAMS.BOOST_DV;
+                dv = -BOOST_DV;
             } else {
                 dv += PARAMS.G;
             }
@@ -664,7 +669,7 @@ public class LLand extends FrameLayout {
         @TargetApi(Build.VERSION_CODES.LOLLIPOP)
         public void boost() {
             mBoosting = true;
-            dv = -PARAMS.BOOST_DV;
+            dv = -BOOST_DV;
             animate().cancel();
             animate()
                     .scaleX(1.25f)

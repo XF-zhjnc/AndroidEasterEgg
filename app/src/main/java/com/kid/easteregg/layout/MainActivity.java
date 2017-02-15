@@ -168,6 +168,11 @@ public class MainActivity extends AppCompatActivity
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
+        if (id == R.id.action_setting) {
+            Intent intent = new Intent(MainActivity.this, SettingActivity.class);
+            startActivity(intent);
+            return true;
+        }
         if (id == R.id.action_supp) {
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
             builder.setTitle("开放源代码许可");

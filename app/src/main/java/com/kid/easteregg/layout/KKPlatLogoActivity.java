@@ -3,7 +3,9 @@ package com.kid.easteregg.layout;
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.ActivityNotFoundException;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Typeface;
 import android.os.Build;
 import android.os.Bundle;
@@ -19,6 +21,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.kid.easteregg.R;
+import com.kid.easteregg.model.Pref;
 
 
 /**
@@ -28,6 +31,7 @@ import com.kid.easteregg.R;
 
 public class KKPlatLogoActivity extends Activity {
     FrameLayout mContent;
+    Pref mPrefs;
     int mCount;
     final Handler mHandler = new Handler();
     static final int BGCOLOR = 0xffed1d24;
@@ -41,6 +45,7 @@ public class KKPlatLogoActivity extends Activity {
         Typeface light = Typeface.create("sans-serif-light", Typeface.NORMAL);
         mContent = new FrameLayout(this);
         mContent.setBackgroundColor(0xC0000000);
+        mPrefs = new Pref(this);
 
         final FrameLayout.LayoutParams lp = new FrameLayout.LayoutParams(
                 FrameLayout.LayoutParams.WRAP_CONTENT,
@@ -55,11 +60,12 @@ public class KKPlatLogoActivity extends Activity {
         bg.setAlpha(0f);
         final TextView letter = new TextView(this);
         letter.setTypeface(bold);
-        letter.setTextSize(300);
+        //letter.setTextSize(300);
+        letter.setTextSize(mPrefs.getKitkatSize());
         letter.setTextColor(0xFFFFFFFF);
         letter.setGravity(Gravity.CENTER);
         //letter.setText(String.valueOf(Build.ID).substring(0, 1));
-        letter.setText("K");
+        letter.setText(mPrefs.getKitkatStr());
         final int p = (int)(4 * metrics.density);
         final TextView tv = new TextView(this);
         if (light != null) tv.setTypeface(light);
